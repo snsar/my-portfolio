@@ -11,6 +11,38 @@
     --accent1: #b9c668;
     --accent2: #7e744c;
     --accent3: #2d3210;
+
+    --color-background: #e5e7eb;
+    --color-background-hover: #c1c2c5;
+    --color-rect1: #cccccc;
+    --color-rect2: #ffd700;
+    --color-rect3: #b8b7b7;
+
+}
+
+.dark {
+
+    --color-background: #2d2d2d;
+    --color-background-hover: #131111;
+    --color-rect1: #3a3a3a;
+    --color-rect2: #d4af37;
+    --color-rect3: #565454d0;
+}
+
+.background {
+    fill: var(--color-background);
+}
+
+.rect1 {
+    fill: var(--color-rect1);
+}
+
+.rect2 {
+    fill: var(--color-rect2);
+}
+
+.rect3 {
+    fill: var(--color-rect3);
 }
 
 body {
@@ -18,7 +50,7 @@ body {
 }
 
 .section {
-    min-height: 100vh;
+    min-height: 80vh;
     padding-top: 64px;
 }
 
@@ -83,7 +115,7 @@ body {
 
 .project-overlay {
     opacity: 0;
-    background: rgba(26, 26, 26, 0.9);
+    background: var(--color-background-hover);
     transition: opacity 0.3s ease;
 }
 
@@ -269,9 +301,17 @@ body {
 }
 
 @keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .spin {
@@ -280,74 +320,115 @@ body {
     border: 2px solid;
     border-radius: 50%;
     animation: orbit 5s linear infinite;
-  }
-  
-  .box {
+}
+
+.box {
     height: 50px;
     width: 50px;
     border-radius: 50%;
     margin-left: 62px;
     background-color: rgb(226, 233, 131);
-  }
-  
-  .box:nth-child(2) {
+}
+
+.box:nth-child(2) {
     margin-left: 46px;
     opacity: 0.8;
     margin-top: -40px;
-  }
-  
-  .box:nth-child(3) {
+}
+
+.box:nth-child(3) {
     margin-left: 34px;
     margin-top: -38px;
     opacity: 0.5;
-  }
-  .box:nth-child(4) {
+}
+
+.box:nth-child(4) {
     margin-left: 285px;
     margin-top: 205px;
-  }
-  .box:nth-child(5) {
+}
+
+.box:nth-child(5) {
     margin-left: 296px;
     margin-top: -64px;
     opacity: 0.8;
-  }
-  .box:nth-child(6) {
+}
+
+.box:nth-child(6) {
     margin-left: 305px;
     margin-top: -63px;
     opacity: 0.5;
-  }
-  
-  @keyframes orbit {
+}
+
+@keyframes orbit {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
+
     to {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
-  
-  @media screen and (max-width: 430px) {
-    .container {
-      height: 300px;
-      width: 300px;
+}
+
+@media screen and (max-width: 430px) {
+    .spin {
+        margin-top: 10px;
+        margin-left: 8px;
+        height: 340px;
+        width: 340px;
     }
+
     .box {
-      height: 80px;
-      width: 80px;
+        height: 40px;
+        width: 40px;
+        margin-top: 56px;
+        margin-left: 3px;
     }
+
+    .box:nth-child(2) {
+        margin-left: -5px;
+        margin-top: -22px;
+    }
+
     .box:nth-child(3) {
-      margin-left: -30px;
-      margin-top: -50px;
+        margin-left: -10px;
+        margin-top: -23px;
     }
-  }
-  @media screen and (max-width: 380px){
-    .container {
-      height: 250px;
-      width: 250px;
-    } 
-  }
-  @media screen and (max-width: 330px){
-      .container {
-          height: 250px;
-          width: 250px;
-        } 
-  }
+
+    .box:nth-child(4) {
+        margin-left: 288px;
+        margin-top: 113px;
+    }
+
+    .box:nth-child(5) {
+        margin-left: 298px;
+        margin-top: -55px;
+    }
+
+    .box:nth-child(6) {
+        margin-left: 304px;
+        margin-top: -55px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .spin {
+        height: 250px;
+        width: 250px;
+    }
+}
+
+@media screen and (max-width: 330px) {
+    .spin {
+        height: 250px;
+        width: 250px;
+    }
+}
+
+.skill-icon {
+    transition: transform 0.12s ease;
+    cursor: pointer;
+}
+
+.skill-icon:hover {
+    transform: translateY(-6px) rotate(13deg);
+}
