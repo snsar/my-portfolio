@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tran Van Phuc</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Particles.js for background effects -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            light: '#f8d57e',
+                            DEFAULT: '#d4af37',
+                            dark: '#a38728',
+                        },
+                        dark: {
+                            light: '#2d2d2d',
+                            DEFAULT: '#1a1a1a',
+                            dark: '#121212',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    transitionProperty: {
+                        'height': 'height',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+    --gold: #d4af37;
+    --gold-light: #f8d57e;
+    --gold-dark: #a38728;
+    --dark: #1a1a1a;
+    --dark-light: #2d2d2d;
+    --dark-darker: #121212;
+
+    --primary: #e7c557;
+    --secondary: #7c7373;
+    --accent1: #b9c668;
+    --accent2: #7e744c;
+    --accent3: #2d3210;
+
+    --color-background: #e5e7eb;
+    --color-background-hover: #c1c2c5;
+    --color-rect1: #cccccc;
+    --color-rect2: #ffd700;
+    --color-rect3: #b8b7b7;
+    --glow: #FFE469;
+}
+
+.dark {
+
+    --color-background: #2d2d2d;
+    --color-background-hover: #131111;
+    --color-rect1: #3a3a3a;
+    --color-rect2: #d4af37;
+    --color-rect3: #565454d0;
+    --glow: #d2b224;
+}
+
+.background {
+    fill: var(--color-background);
+}
+
+.rect1 {
+    fill: var(--color-rect1);
+}
+
+.rect2 {
+    fill: var(--color-rect2);
+}
+
+.rect3 {
+    fill: var(--color-rect3);
+}
+
+body {
+    scroll-behavior: smooth;
+}
+
+.section {
+    min-height: 80vh;
+    padding-top: 64px;
+}
+
+.gold-gradient {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+}
+
+.skill-bar {
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    background-color: rgba(212, 175, 55, 0.2);
+    overflow: hidden;
+}
+
+.skill-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    border-radius: 4px;
+    background-color: var(--gold);
+    transition: width 1.5s ease-out;
+}
+
+/* Timeline Design */
+.timeline-item {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: var(--gold);
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 8px;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: var(--gold);
+}
+
+.project-card {
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-overlay {
+    opacity: 0;
+    background: var(--color-background-hover);
+    transition: opacity 0.3s ease;
+}
+
+.project-card:hover .project-overlay {
+    opacity: 1;
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(212, 175, 55, 0.3);
+    transition: all 0.3s ease;
+}
+
+.nav-dot.active {
+    background-color: var(--gold);
+    transform: scale(1.2);
+}
+
+.nav-text {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover .nav-text,
+.nav-item.active .nav-text {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Custom Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    overflow-y: auto;
+}
+
+.modal-content {
+    max-width: 90%;
+    width: 800px;
+    margin: 5vh auto;
+    border-radius: 8px;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Custom Input Styles */
+.form-input {
+    background-color: transparent;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.4);
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: var(--gold);
+    outline: none;
+}
+
+.floating-label {
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus~.floating-label,
+.form-input:not(:placeholder-shown)~.floating-label {
+    transform: translateY(-20px) scale(0.8);
+    color: var(--gold);
+}
+
+.role-text {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--secondary);
+    width: 0;
+    animation: typing 3.5s steps(40, end) forwards, blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: var(--secondary)
+    }
+}
+
+.social-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--gold);
+    color: white;
+    font-size: 1.5rem;
+    transition: transform 0.17s ease;
+}
+
+.social-icon:hover {
+    transform: translateY(-5px) rotate(10deg) scale(1.05);
+    box-shadow: 0 0 15px var(--glow);
+    transition: all 0.45s ease;
+}
+
+
+.cta-button {
+    padding: 12px 30px;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--glow);
+    transition: all 0.45s ease;
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--secondary), var(--accent1));
+    transition: left 0.6s ease;
+    z-index: -1;
+}
+
+.cta-button:hover::before {
+    left: 0;
+}
+
+.hero-text {
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient 7s ease infinite;
+    background-size: 400% 400%;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.spin {
+    height: 360px;
+    width: 360px;
+    border: 2px solid;
+    border-radius: 50%;
+    animation: orbit 5s linear infinite;
+}
+
+.box {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-left: 62px;
+    background-color: rgb(226, 233, 131);
+}
+
+.box:nth-child(2) {
+    margin-left: 46px;
+    opacity: 0.8;
+    margin-top: -40px;
+}
+
+.box:nth-child(3) {
+    margin-left: 34px;
+    margin-top: -38px;
+    opacity: 0.5;
+}
+
+.box:nth-child(4) {
+    margin-left: 285px;
+    margin-top: 205px;
+}
+
+.box:nth-child(5) {
+    margin-left: 296px;
+    margin-top: -64px;
+    opacity: 0.8;
+}
+
+.box:nth-child(6) {
+    margin-left: 305px;
+    margin-top: -63px;
+    opacity: 0.5;
+}
+
+@keyframes orbit {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media screen and (max-width: 430px) {
+    .spin {
+        margin-top: 10px;
+        margin-left: 8px;
+        height: 340px;
+        width: 340px;
+    }
+
+    .box {
+        height: 40px;
+        width: 40px;
+        margin-top: 56px;
+        margin-left: 3px;
+    }
+
+    .box:nth-child(2) {
+        margin-left: -5px;
+        margin-top: -22px;
+    }
+
+    .box:nth-child(3) {
+        margin-left: -10px;
+        margin-top: -23px;
+    }
+
+    .box:nth-child(4) {
+        margin-left: 288px;
+        margin-top: 113px;
+    }
+
+    .box:nth-child(5) {
+        margin-left: 298px;
+        margin-top: -55px;
+    }
+
+    .box:nth-child(6) {
+        margin-left: 304px;
+        margin-top: -55px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .spin {
+        height: 250px;
+        width: 250px;
+    }
+}
+
+@media screen and (max-width: 330px) {
+    .spin {
+        height: 250px;
+        width: 250px;
+    }
+}
+
+.skill-icon {
+    transition: transform 0.12s ease;
+    cursor: pointer;
+}
+
+.skill-icon:hover {
+    transform: translateY(-6px) rotate(13deg) scale(1.2);
+    box-shadow: 0 0 15px var(--glow);
+    transition: all 0.45s ease;
+}
+.hover-bg-glow:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 15px var(--glow);
+    transition: all 0.45s ease;
+}
+
+
+    </style>
+</head>
+
+<body class="font-sans bg-gray-200 dark:bg-dark-dark text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Left Side Navigation -->
+    <nav class="fixed left-8 top-1/2 transform -translate-y-1/2 z-40 hidden md:block">
+        <ul class="space-y-8" id="nav-dots">
+            <li class="nav-item flex items-center cursor-pointer" data-target="hero">
+                <div class="nav-dot"></div>
+                <span class="nav-text ml-3 font-semibold">Home</span>
+            </li>
+            <li class="nav-item flex items-center cursor-pointer" data-target="about">
+                <div class="nav-dot"></div>
+                <span class="nav-text ml-3 font-semibold">About</span>
+            </li>
+            <li class="nav-item flex items-center cursor-pointer" data-target="experience">
+                <div class="nav-dot"></div>
+                <span class="nav-text ml-3 font-semibold">Experience & Education</span>
+            </li>
+            <li class="nav-item flex items-center cursor-pointer" data-target="portfolio">
+                <div class="nav-dot"></div>
+                <span class="nav-text ml-3 font-semibold">Portfolio</span>
+            </li>
+            <li class="nav-item flex items-center cursor-pointer" data-target="skills">
+                <div class="nav-dot"></div>
+                <span class="nav-text ml-3 font-semibold">Skills</span>
+            </li>
+            <li class="nav-item flex items-center cursor-pointer" data-target="contact">
+                <div class="nav-dot"></div>
+                <span class="nav-text ml-3 font-semibold">Contact</span>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Header -->
+    <header
+        class="fixed top-0 left-0 w-full bg-white dark:bg-dark-dark z-40 shadow-md md:hidden transition-colors duration-300">
+        <div class="container mx-auto px-3 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gold">Portfolio</h1>
+            <button id="mobile-menu-toggle"
+                class="text-gray-800 w-10 h-10 rounded-full bg-gray-200 dark:bg-dark-light dark:text-gold">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden bg-white dark:bg-dark shadow-lg transition-all duration-300">
+            <ul class="py-2 px-6 space-y-2">
+                <li><a href="#hero" class="block py-2 hover:text-gold">Home</a></li>
+                <li><a href="#about" class="block py-2 hover:text-gold">About</a></li>
+                <li><a href="#experience" class="block py-2 hover:text-gold">Experience & Education</a></li>
+                <li><a href="#portfolio" class="block py-2 hover:text-gold">Portfolio</a></li>
+                <li><a href="#skills" class="block py-2 hover:text-gold">Skills</a></li>
+                <li><a href="#contact" class="block py-2 hover:text-gold">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Theme Switcher -->
+    <div class="fixed top-[1rem] right-[3.8rem] md:top-6 md:right-6  z-40">
+        <button id="theme-toggle"
+            class="w-10 h-10 rounded-full bg-gray-200 dark:bg-dark-light flex items-center justify-center shadow-md">
+            <i class="fas fa-moon dark:hidden"></i>
+            <i class="fas fa-sun hidden dark:block text-gold"></i>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="section relative flex items-center justify-center min-h-screen overflow-hidden">
+        <div id="particles-js" class="absolute inset-0"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="text-4xl md:text-8xl font-bold mb-4 transform opacity-1 font-sans" id="hero-title">
+                    <span class="">TV</span> <span class="hero-text">Phuc</span>
+                </h1>
+                <h2 class="text-xl md:text-2xl mb-8 transform opacity-1 role-text font-bold" id="hero-subtitle">
+                    Web Developer
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-10 transform opacity-1 " id="hero-text">
+                    I’m a passionate Web developer, focused on building optimized and secure systems. Always eager to
+                    learn, grow, and stay ahead in technology.
+                </p>
+                <div class="transform opacity-1" id="hero-cta">
+                    <button onclick="document.getElementById('portfolio').scrollIntoView({behavior: 'smooth'})"
+                        class="cta-button mt-4">
+                        View My Work
+                    </button>
+                </div>
+                <div class="mt-12 flex justify-center space-x-6 transform opacity-1" id="hero-socials">
+                    <a href="https://github.com/tvphuc0910"
+                        class="text-gray-600 hover:text-white dark:text-gray-800 dark:hover:text-white social-icon">
+                        <i class="fab fa-github text-2xl"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/tvphuc"
+                        class="text-gray-600 hover:text-white dark:text-gray-800 dark:hover:text-white social-icon">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+                    <a href="mailto:tvphuc0910@gmail.com"
+                        class="text-gray-600 hover:text-white dark:text-gray-800 dark:hover:text-white social-icon">
+                        <i class="fa-solid fa-envelope text-2xl"></i>
+                    </a>
+                    <a href="https://www.facebook.com/pmonkeys"
+                        class="text-gray-600 hover:text-white dark:text-gray-800 dark:hover:text-white social-icon">
+                        <i class="fab fa-facebook text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="#about"
+            class="absolute bottom-2 md:bottom-8 left-1/2 transform -translate-x-1/2 text-gold hover:text-gold-dark transition-colors duration-300 animate-bounce">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section relative bg-gray-50 dark:bg-dark pt-16 pb-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 opacity-1 transform translate-y-10 title-hover"
+                data-gsap="reveal">
+                About <span class="text-gold">Me</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+                <div class="opacity-1 transform translate-y-10 grid grid items-center" data-gsap="reveal">
+                    <div class="spin border-gray-600 dark:border-gray-300">
+                        <div class="box"></div>
+                        <div class="box"></div>
+                        <div class="box"></div>
+                        <div class="box"></div>
+                        <div class="box"></div>
+                        <div class="box"></div>
+                    </div>
+                    <div
+                        class="absolute top-5 left-5 w-full aspect-square rounded-full overflow-hidden border-4 border-gold mx-auto md:mx-0 max-w-xs avatar-img">
+                        <svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full">
+
+                            <defs>
+
+                                <img id="avatar-placeholder" src="img_1.png" alt="">
+                                <!-- <pattern id="avatar-placeholder" patternUnits="userSpaceOnUse" width="100" height="100">
+                                    <rect width="100" height="100" fill="#2d2d2d" />
+                                    <circle cx="50" cy="35" r="15" fill="#d4af37" />
+                                    <rect x="35" y="60" width="30" height="25" rx="5" fill="#d4af37" />
+                                </pattern> -->
+                            </defs>
+                            <circle cx="50" cy="50" r="48" fill="url(#avatar-placeholder)" />
+
+                        </svg>
+
+                    </div>
+                </div>
+                <div class="opacity-1 transform translate-y-10" data-gsap="reveal">
+                    <h3 class="text-2xl font-semibold mb-4">TV Phuc</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        As a PHP Laravel developer with 1.5 years of experience in building and optimizing web
+                        applications, I am passionate about exploring new technologies to enhance performance and user
+                        experience. I have strong skills in backend development, database management, and effective
+                        teamwork. Additionally, I can develop user-friendly interfaces and leverage AI to optimize
+                        workflows.
+                    <p class="text-gray-600 dark:text-gray-400 mb-8">
+                        Beyond programming, I enjoy reading books on technology, finance, and science to continuously
+                        update my knowledge and broaden my perspective. I believe that combining technical expertise
+                        with a multidisciplinary mindset enables me to create high-quality products that bring real
+                        value to users.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div>
+                            <p class="font-medium">Name:</p>
+                            <p class="text-gray-600 dark:text-gray-400">Tran Van Phuc</p>
+                        </div>
+                        <div>
+                            <p class="font-medium">Email:</p>
+                            <p class="text-gray-600 dark:text-gray-400">tvphuc0910@gmail.com</p>
+                        </div>
+                        <div>
+                            <p class="font-medium">Location:</p>
+                            <p class="text-gray-600 dark:text-gray-400">Ha Noi, Viet Nam</p>
+                        </div>
+                        <div>
+                            <p class="font-medium">Available for:</p>
+                            <p class="text-gray-600 dark:text-gray-400">Freelance Projects</p>
+                        </div>
+                    </div>
+                    <a href="#contact"
+                        class="px-6 py-2 border-2 border-gold text-gold hover:bg-gold hover:text-white rounded-full font-medium inline-block transition-all duration-300 hover-bg-glow">
+                        Contact Me
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section relative bg-white dark:bg-dark-dark pt-16 pb-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 opacity-1 transform translate-y-10"
+                data-gsap="reveal">
+                <span class="text-gold">Experience</span> & <span class="text-gold">Education</span>
+            </h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="timeline-item pb-12 opacity-1 transform translate-y-10" data-gsap="reveal">
+                    <div>
+                        <h3 class="text-xl font-semibold">Junior PHP Developer</h3>
+                        <p class="text-gold mb-2">2023 - 2024</p>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            <span class="font-bold">Golsoft Company</span>
+                            <br>Developed and maintained key system modules following modern standards.
+                            <br>Built and managed databases to optimize system performance and stability.
+
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item pb-12 opacity-1 transform translate-y-10" data-gsap="reveal">
+                    <div>
+                        <h3 class="text-xl font-semibold">Information Technology Engineer</h3>
+                        <p class="text-gold mb-2">2020 - 2024</p>
+                        <p class="text-gray-600 dark:text-gray-400 font-bold">
+                            Posts and Telecommunications Institute of Technology (PTIT)
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item opacity-1 transform translate-y-10" data-gsap="reveal">
+                    <div>
+                        <h3 class="text-xl font-semibold">Student</h3>
+                        <p class="text-gold mb-2">2017 - 2020</p>
+                        <p class="text-gray-600 dark:text-gray-400 font-bold">
+                            Hoang Quoc Viet High School
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section relative bg-gray-50 dark:bg-dark pt-16 pb-12">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 opacity-1 transform translate-y-10"
+                data-gsap="reveal">
+                My <span class="text-gold">Portfolio</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Project 1 -->
+                <div class="project-card rounded-lg shadow-lg overflow-hidden opacity-1 transform translate-y-10"
+                    data-gsap="reveal">
+                    <div class="relative h-64 dark:bg-dark-light bg-gray-200">
+                        <svg viewBox="0 0 200 150" class="w-full h-full">
+                            <rect class="background" width="200" height="150" />
+                            <rect class="rect1" x="20" y="20" width="160" height="30" rx="4" />
+                            <rect class="rect2" x="20" y="60" width="70" height="70" rx="4" />
+                            <rect class="rect1" x="100" y="60" width="80" height="20" rx="4" />
+                            <rect class="rect1" x="100" y="90" width="80" height="40" rx="4" />
+                        </svg>
+                        <div class="project-overlay absolute inset-0 flex items-center justify-center flex-col p-6">
+                            <h3 class="text-xl font-semibold text-white mb-2">E-Commerce Website</h3>
+                            <p class="text-yellow-400 dark:text-gold mb-4 text-center">Tailwind, Laravel, MySQL</p>
+                            <button
+                                class="project-view px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full text-sm transition-colors duration-300 hover-bg-glow"
+                                data-project="1">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card rounded-lg shadow-lg overflow-hidden opacity-1 transform translate-y-10"
+                    data-gsap="reveal">
+                    <div class="relative h-64 dark:bg-dark-light bg-gray-200">
+                        <svg viewBox="0 0 200 150" class="w-full h-full">
+                            <rect class="background" width="200" height="150" />
+                            <circle class="rect2" cx="100" cy="60" r="40" />
+                            <rect class="rect1" x="40" y="110" width="120" height="10" rx="4" />
+                            <rect class="rect1" x="60" y="130" width="80" height="10" rx="4" />
+                        </svg>
+                        <div class="project-overlay absolute inset-0 flex items-center justify-center flex-col p-6">
+                            <h3 class="text-xl font-semibold text-white mb-2">Garage Management System</h3>
+                            <p class="text-yellow-400 dark:text-gold mb-4 text-center">Boostrap, Laravel, MySQL</p>
+                            <button
+                                class="project-view px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full text-sm transition-colors duration-300 hover-bg-glow"
+                                data-project="2">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card rounded-lg shadow-lg overflow-hidden opacity-1 transform translate-y-10"
+                    data-gsap="reveal">
+                    <div class="relative h-64 dark:bg-dark-light bg-gray-200">
+                        <svg viewBox="0 0 200 150" class="w-full h-full">
+                            <rect class="background" width="200" height="150" />
+                            <rect class="rect1" x="20" y="20" width="160" height="110" rx="4" />
+                            <rect class="rect2" x="30" y="30" width="50" height="50" rx="4" />
+                            <rect class="rect3" x="90" y="30" width="80" height="10" rx="2" />
+                            <rect class="rect3" x="90" y="50" width="60" height="10" rx="2" />
+                            <rect class="rect3" x="30" y="90" width="140" height="30" rx="4" />
+                        </svg>
+                        <div class="project-overlay absolute inset-0 flex items-center justify-center flex-col p-6">
+                            <h3 class="text-xl font-semibold text-white mb-2">Law Management System</h3>
+                            <p class="text-yellow-400 dark:text-gold mb-4 text-center">Boostrap, Laravel, MySQL</p>
+                            <button
+                                class="project-view px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full text-sm transition-colors duration-300 hover-bg-glow"
+                                data-project="3">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <!-- <div class="project-card rounded-lg shadow-lg overflow-hidden opacity-1 transform translate-y-10"
+                    data-gsap="reveal">
+                    <div class="relative h-64 bg-dark-light">
+                        <svg viewBox="0 0 200 150" class="w-full h-full">
+                            <rect width="200" height="150" fill="#2d2d2d" />
+                            <circle cx="40" cy="40" r="20" fill="#d4af37" />
+                            <rect x="70" y="30" width="110" height="20" rx="4" fill="#3a3a3a" />
+                            <rect x="20" y="70" width="160" height="2" fill="#3a3a3a" />
+                            <rect x="20" y="80" width="160" height="50" rx="4" fill="#3a3a3a" />
+                        </svg>
+                        <div class="project-overlay absolute inset-0 flex items-center justify-center flex-col p-6">
+                            <h3 class="text-xl font-semibold text-white mb-2">Dashboard UI</h3>
+                            <p class="text-gold mb-4 text-center">Vue.js, Tailwind CSS</p>
+                            <button
+                                class="project-view px-4 py-2 bg-gold hover:bg-gold-dark text-white rounded-full text-sm transition-colors duration-300"
+                                data-project="4">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Project 5 -->
+                <!-- <div class="project-card rounded-lg shadow-lg overflow-hidden opacity-1 transform translate-y-10"
+                    data-gsap="reveal">
+                    <div class="relative h-64 bg-dark-light">
+                        <svg viewBox="0 0 200 150" class="w-full h-full">
+                            <rect width="200" height="150" fill="#2d2d2d" />
+                            <rect x="30" y="30" width="140" height="90" rx="4" fill="#3a3a3a" />
+                            <path d="M50,70 L90,40 L130,90 Z" fill="#d4af37" />
+                            <circle cx="60" cy="50" r="8" fill="#4a4a4a" />
+                        </svg>
+                        <div class="project-overlay absolute inset-0 flex items-center justify-center flex-col p-6">
+                            <h3 class="text-xl font-semibold text-white mb-2">Photography Website</h3>
+                            <p class="text-gold mb-4 text-center">WordPress, Custom Theme</p>
+                            <button
+                                class="project-view px-4 py-2 bg-gold hover:bg-gold-dark text-white rounded-full text-sm transition-colors duration-300"
+                                data-project="5">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Project 6 -->
+                <!-- <div class="project-card rounded-lg shadow-lg overflow-hidden opacity-1 transform translate-y-10"
+                    data-gsap="reveal">
+                    <div class="relative h-64 bg-dark-light">
+                        <svg viewBox="0 0 200 150" class="w-full h-full">
+                            <rect width="200" height="150" fill="#2d2d2d" />
+                            <rect x="20" y="20" width="160" height="30" rx="4" fill="#d4af37" />
+                            <rect x="20" y="60" width="45" height="70" rx="4" fill="#3a3a3a" />
+                            <rect x="75" y="60" width="45" height="70" rx="4" fill="#3a3a3a" />
+                            <rect x="130" y="60" width="45" height="70" rx="4" fill="#3a3a3a" />
+                        </svg>
+                        <div class="project-overlay absolute inset-0 flex items-center justify-center flex-col p-6">
+                            <h3 class="text-xl font-semibold text-white mb-2">SaaS Platform</h3>
+                            <p class="text-gold mb-4 text-center">Angular, Express, PostgreSQL</p>
+                            <button
+                                class="project-view px-4 py-2 bg-gold hover:bg-gold-dark text-white rounded-full text-sm transition-colors duration-300"
+                                data-project="6">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section relative bg-white dark:bg-dark-dark pt-16 pb-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 opacity-1 transform translate-y-10"
+                data-gsap="reveal">
+                My <span class="text-gold">Skills</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-20 max-w-5xl mx-auto">
+                <div class="opacity-1 transform translate-y-10" data-gsap="reveal">
+                    <h3 class="text-2xl font-semibold mb-8">Languages & Frameworks</h3>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">HTML/CSS</span>
+                            <span class="text-gold">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="95"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">JavaScript</span>
+                            <span class="text-gold">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="90"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">PHP/Laravel</span>
+                            <span class="text-gold">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="80"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">VueJS</span>
+                            <span class="text-gold">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">Python</span>
+                            <span class="text-gold">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="80"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="opacity-1 transform translate-y-10" data-gsap="reveal">
+                    <h3 class="text-2xl font-semibold mb-8">Databases & DevOps</h3>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">MySQL</span>
+                            <span class="text-gold">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="90"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">MongoDB</span>
+                            <span class="text-gold">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">Redis</span>
+                            <span class="text-gold">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">Git</span>
+                            <span class="text-gold">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="85"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">Docker</span>
+                            <span class="text-gold">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" data-width="75"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20 max-w-4xl mx-auto opacity-1 transform translate-y-10" data-gsap="reveal">
+                <h3 class="text-2xl font-semibold mb-8 text-center">Tools & Technologies</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <span
+                        class="px-4 py-2 bg-gray-100 dark:bg-dark-light rounded-full text-gray-800 dark:text-gray-200 skill-icon">Python</span>
+                    <span
+                        class="px-4 py-2 bg-gold-dark dark:bg-gold-light rounded-full text-gray-200 dark:text-gray-900 skill-icon">PHP</span>
+                    <span
+                        class="px-4 py-2 bg-gray-100 dark:bg-dark-light rounded-full text-gray-800 dark:text-gray-200 skill-icon">Laravel</span>
+                    <span
+                        class="px-4 py-2 bg-gold-dark dark:bg-gold-light rounded-full text-gray-200 dark:text-gray-900 skill-icon">VueJS</span>
+                    <span
+                        class="px-4 py-2 bg-gray-100 dark:bg-dark-light rounded-full text-gray-800 dark:text-gray-200 skill-icon">Boostrap
+                        CSS</span>
+                    <span
+                        class="px-4 py-2 bg-gold-dark dark:bg-gold-light rounded-full text-gray-200 dark:text-gray-900 skill-icon">Tailwind
+                        CSS</span>
+                    <span
+                        class="px-4 py-2 bg-gray-100 dark:bg-dark-light rounded-full text-gray-800 dark:text-gray-200 skill-icon">SASS</span>
+                    <span
+                        class="px-4 py-2 bg-gold-dark dark:bg-gold-light rounded-full text-gray-200 dark:text-gray-900 skill-icon">MySQL</span>
+                    <span
+                        class="px-4 py-2 bg-gray-100 dark:bg-dark-light rounded-full text-gray-800 dark:text-gray-200 skill-icon">MongoDB</span>
+                    <span
+                        class="px-4 py-2 bg-gold-dark dark:bg-gold-light rounded-full text-gray-200 dark:text-gray-900 skill-icon">Redis</span>
+                    <span
+                        class="px-4 py-2 bg-gray-100 dark:bg-dark-light rounded-full text-gray-800 dark:text-gray-200 skill-icon">Docker</span>
+                    <span
+                        class="px-4 py-2 bg-gold-dark dark:bg-gold-light rounded-full text-gray-200 dark:text-gray-900 skill-icon">Git</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section relative bg-gray-50 dark:bg-dark pt-16 pb-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 opacity-1 transform translate-y-10"
+                data-gsap="reveal">
+                Contact <span class="text-gold">Me</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-12 max-w-5xl mx-auto">
+                <div class="col-span-3 opacity-1 transform translate-y-10" data-gsap="reveal">
+                    <h3 class="text-2xl font-semibold mb-6">Get In Touch</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8">
+                        I'm currently available for freelance work. If you have a project in mind or just want to say
+                        hello,
+                        feel free to reach out!
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div
+                                class="w-12 h-12 bg-gold rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Email</h4>
+                                <p class="text-gray-600 dark:text-gray-400">tvphuc0910@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div
+                                class="w-12 h-12 bg-gold rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Location</h4>
+                                <p class="text-gray-600 dark:text-gray-400">Ha Noi, Viet Nam</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div
+                                class="w-12 h-12 bg-gold rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-phone text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Phone</h4>
+                                <p class="text-gray-600 dark:text-gray-400">0326 226 141</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-2 opacity-1 transform translate-y-10" data-gsap="reveal">
+                    <h3 class="text-2xl font-semibold mb-6">My Professional CV</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8">
+                        A comprehensive document showcasing my skills, experience, and achievements.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div
+                                class="w-12 h-12 bg-gold rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Updated 2025</h4>
+                                <p class="text-gray-600 dark:text-gray-400">PDF Format • 2 Pages</p>
+                            </div>
+                        </div>
+                        <div class="pt-1 flex items-end">
+                            <a href="TranVanPhuc_php_junior.pdf" target="_blank"
+                                class="px-6 py-2 border-2 border-gold text-gold hover:bg-gold hover:text-white rounded-full font-medium inline-block transition-all duration-300 hover-bg-glow">
+                                Download <i class="fa-solid fa-xs fa-arrow-down-long"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 dark:bg-dark-dark text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://github.com/tvphuc0910"
+                    class="text-gray-800 dark:text-gray-400 dark:hover:text-gold hover:text-gold transition-colors duration-300">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="https://linkedin.com/in/tvphuc"
+                    class="text-gray-800 dark:text-gray-400 dark:hover:text-gold hover:text-gold transition-colors duration-300">
+                    <i class="fab fa-linkedin text-xl"></i>
+                </a>
+                <a href="mailto:tvphuc0910@gmail.com"
+                    class="text-gray-800 dark:text-gray-400 dark:hover:text-gold hover:text-gold transition-colors duration-300">
+                    <i class="fa-solid fa-envelope text-xl"></i>
+                </a>
+                <a href="https://www.facebook.com/pmonkeys"
+                    class="text-gray-800 dark:text-gray-400 dark:hover:text-gold hover:text-gold transition-colors duration-300">
+                    <i class="fab fa-facebook text-xl"></i>
+                </a>
+            </div>
+            <p class="text-gray-800 dark:text-gray-400">
+                &copy; 2025 Tran Van Phuc. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Project Modals -->
+    <div id="project-modal-1" class="modal">
+        <div class="modal-content bg-white dark:bg-dark-dark p-6 rounded-lg shadow-xl">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-2xl font-bold">E-Commerce Website</h3>
+                <button
+                    class="modal-close text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="aspect-video bg-dark-light mb-6 rounded-lg overflow-hidden">
+                <svg viewBox="0 0 640 360" class="w-full h-full">
+                    <rect class="background" width="640" height="360" />
+                    <rect class="rect1" x="40" y="40" width="560" height="60" rx="4" />
+                    <rect class="rect2" x="60" y="60" width="100" height="20" rx="4" />
+                    <rect class="rect1" x="40" y="120" width="240" height="200" rx="4" />
+                    <rect class="rect1" x="300" y="120" width="300" height="80" rx="4" />
+                    <rect class="rect1" x="300" y="220" width="300" height="100" rx="4" />
+                </svg>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold mb-2">Project Overview</h4>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    A web-based e-commerce platform designed to streamline dropshipping
+                    operations, featuring supplier management and automated order fulfillment for
+                    enhanced online retail efficiency.
+
+                </p>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <h5 class="font-medium">Client:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">Dropii</p>
+                    </div>
+                    <div>
+                        <h5 class="font-medium">Year:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">2024</p>
+                    </div>
+                    <div>
+                        <h5 class="font-medium">Role:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">Developer</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Technologies Used</h4>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">PHP</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">Laravel</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">Tailwind CSS</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">jQuery</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">MySQL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="project-modal-2" class="modal">
+        <!-- Similar content structure for Project 2 -->
+        <div class="modal-content bg-white dark:bg-dark-dark p-6 rounded-lg shadow-xl">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-2xl font-bold">Garage Management System</h3>
+                <button
+                    class="modal-close text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="aspect-video bg-dark-light mb-6 rounded-lg overflow-hidden">
+                <svg viewBox="0 0 640 360" class="w-full h-full">
+                    <rect class="background" width="640" height="360" />
+                    <circle class="rect2" cx="320" cy="140" r="80" />
+                    <rect class="rect1" x="120" y="240" width="400" height="20" rx="4" />
+                    <rect class="rect1" x="200" y="280" width="240" height="20" rx="4" />
+                </svg>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold mb-2">Project Overview</h4>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    A car garage management system featuring key functionalities such as car
+                    wash service tracking, retail management for spare parts, appointment
+                    scheduling, and license plate recognition using cameras.
+                </p>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <h5 class="font-medium">Client:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">Golsoft</p>
+                    </div>
+                    <div>
+                        <h5 class="font-medium">Year:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">2024</p>
+                    </div>
+                    <div>
+                        <h5 class="font-medium">Role:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">Developer</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Technologies Used</h4>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">PHP</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">Laravel</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">Bootstrap CSS</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">jQuery</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">MySQL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="project-modal-3" class="modal">
+        <!-- Similar content structure for Project 2 -->
+        <div class="modal-content bg-white dark:bg-dark-dark p-6 rounded-lg shadow-xl">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-2xl font-bold">Law Management System</h3>
+                <button
+                    class="modal-close text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="aspect-video bg-dark-light mb-6 rounded-lg overflow-hidden">
+                <svg viewBox="0 0 640 360" class="w-full h-full">
+                    <rect class="background" width="640" height="360" />
+                    <rect class="rect1" x="20" y="20" width="600" height="320" rx="4" />
+                    <rect class="rect2" x="40" y="40" width="150" height="150" rx="4" />
+                    <rect class="rect3" x="220" y="40" width="330" height="40" rx="2" />
+                    <rect class="rect3" x="220" y="130" width="300" height="40" rx="2" />
+                    <rect class="rect3" x="40" y="220" width="560" height="100" rx="4" />
+                </svg>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold mb-2">Project Overview</h4>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    A web-based management system designed for law firms, focusing on
+                    intellectual property (IP) management, including patents, trademarks, and
+                    industrial designs, with the capability to efficiently process and manage over
+                    200,000 profiles.
+                </p>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <h5 class="font-medium">Client:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">Alnguyen</p>
+                    </div>
+                    <div>
+                        <h5 class="font-medium">Year:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">2023</p>
+                    </div>
+                    <div>
+                        <h5 class="font-medium">Role:</h5>
+                        <p class="text-gray-600 dark:text-gray-400">Developer</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Technologies Used</h4>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">PHP</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">Laravel</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">Bootstrap CSS</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">jQuery</span>
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-dark-light rounded-full text-sm">MySQL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other project modals (3-6) would be similar in structure -->
+
+    <!-- JavaScript -->
+    <script>
+        // Check for dark mode preference
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark');
+}
+
+// Theme toggle
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+});
+
+// Mobile menu toggle
+const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+
+mobileMenuToggle.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+            window.scrollTo({
+                top: targetElement.offsetTop,
+                behavior: 'smooth'
+            });
+
+            // Close mobile menu if open
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+    });
+});
+
+// Particles.js initialization
+document.addEventListener('DOMContentLoaded', function () {
+    particlesJS('particles-js', {
+        particles: {
+            number: {
+                value: 230,
+                density: {
+                    enable: true,
+                    value_area: 800
+                }
+            },
+            color: {
+                value: '#d4af37'
+            },
+            shape: {
+                type: 'circle',
+                stroke: {
+                    width: 0,
+                    color: '#000000'
+                },
+            },
+            opacity: {
+                value: 0.3,
+                random: false,
+                anim: {
+                    enable: false,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false
+                }
+            },
+            size: {
+                value: 3,
+                random: true,
+                anim: {
+                    enable: false,
+                    speed: 40,
+                    size_min: 0.1,
+                    sync: false
+                }
+            },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: '#d4af37',
+                opacity: 0.2,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 2,
+                direction: 'none',
+                random: false,
+                straight: false,
+                out_mode: 'out',
+                bounce: false,
+                attract: {
+                    enable: false,
+                    rotateX: 600,
+                    rotateY: 1200
+                }
+            }
+        },
+        interactivity: {
+            detect_on: 'canvas',
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: 'grab'
+                },
+                onclick: {
+                    enable: true,
+                    mode: 'push'
+                },
+                resize: true
+            },
+            modes: {
+                grab: {
+                    distance: 140,
+                    line_linked: {
+                        opacity: 0.5
+                    }
+                },
+                push: {
+                    particles_nb: 4
+                }
+            }
+        },
+        retina_detect: true
+    });
+});
+
+// GSAP Animations
+document.addEventListener('DOMContentLoaded', function () {
+    // Hero animations
+    gsap.to('#hero-title', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.2
+    });
+
+    gsap.to('#hero-subtitle', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.4
+    });
+
+    gsap.to('#hero-text', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.6
+    });
+
+    gsap.to('#hero-cta', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.8
+    });
+
+    gsap.to('#hero-socials', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 1
+    });
+
+    // Scroll triggered animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('[data-gsap="reveal"]').forEach(elem => {
+        gsap.from(elem, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            scrollTrigger: {
+                trigger: elem,
+                start: "top 80%",
+                toggleActions: "play none none none"
+            }
+        });
+    });
+
+    // Skill bars animation
+    ScrollTrigger.create({
+        trigger: '#skills',
+        start: "top 80%",
+        onEnter: () => {
+            document.querySelectorAll('.skill-fill').forEach(fill => {
+                const width = fill.getAttribute('data-width');
+                fill.style.width = `${width}%`;
+            });
+        }
+    });
+});
+
+// Navigation dots
+const sections = document.querySelectorAll('.section');
+const navItems = document.querySelectorAll('.nav-item');
+
+function setActiveNavItem() {
+    let current = '';
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navItems.forEach(item => {
+        item.classList.remove('active');
+        item.querySelector('.nav-dot').classList.remove('active');
+
+        if (item.getAttribute('data-target') === current) {
+            item.classList.add('active');
+            item.querySelector('.nav-dot').classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', setActiveNavItem);
+window.addEventListener('load', setActiveNavItem);
+
+navItems.forEach(item => {
+    item.addEventListener('click', function () {
+        const targetId = this.getAttribute('data-target');
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+            window.scrollTo({
+                top: targetElement.offsetTop,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Project modal functionality
+const projectButtons = document.querySelectorAll('.project-view');
+const modals = document.querySelectorAll('.modal');
+const closeButtons = document.querySelectorAll('.modal-close');
+
+projectButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const projectId = button.getAttribute('data-project');
+        const modal = document.getElementById(`project-modal-${projectId}`);
+
+        if (modal) {
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+    });
+});
+
+closeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const modal = button.closest('.modal');
+
+        if (modal) {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+    });
+});
+
+// Close modal when clicking outside
+modals.forEach(modal => {
+    modal.addEventListener('click', e => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+    });
+});
+    
+    </script>
+</body>
+
+</html>
